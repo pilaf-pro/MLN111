@@ -95,6 +95,21 @@ const wisdomParticles = [
 
 // Floating Wisdom Particles Component
 function FloatingWisdomParticles() {
+  const [dimensions, setDimensions] = useState({ width: 1200, height: 800 })
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setDimensions({ width: window.innerWidth, height: window.innerHeight })
+
+      const handleResize = () => {
+        setDimensions({ width: window.innerWidth, height: window.innerHeight })
+      }
+
+      window.addEventListener('resize', handleResize)
+      return () => window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       {wisdomParticles.map((particle, index) => (
@@ -103,13 +118,13 @@ function FloatingWisdomParticles() {
           className="absolute text-4xl font-bold opacity-20"
           style={{ color: particle.color }}
           initial={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
+            x: Math.random() * dimensions.width,
+            y: Math.random() * dimensions.height,
             rotate: 0,
           }}
           animate={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
+            x: Math.random() * dimensions.width,
+            y: Math.random() * dimensions.height,
             rotate: 360,
           }}
           transition={{
@@ -326,8 +341,8 @@ function PhilosophyWheel() {
             <div
               key={index}
               className={`absolute w-16 h-16 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 ${selectedIndex === index
-                  ? "bg-primary text-primary-foreground scale-125 shadow-lg"
-                  : "bg-background border-2 border-primary/30 hover:scale-110"
+                ? "bg-primary text-primary-foreground scale-125 shadow-lg"
+                : "bg-background border-2 border-primary/30 hover:scale-110"
                 }`}
               style={{
                 left: `calc(50% + ${x}px - 32px)`,

@@ -612,7 +612,7 @@ export default function BiographyPage() {
           </div>
         </section>
 
-        <section className="py-32 px-4 bg-gradient-to-r from-muted/20 to-background">
+        {/* <section className="py-32 px-4 bg-gradient-to-r from-muted/20 to-background">
           <div className="max-w-6xl mx-auto">
             <motion.h2
               className="text-5xl md:text-6xl font-bold text-center mb-16 text-foreground"
@@ -633,7 +633,7 @@ export default function BiographyPage() {
               <EducationalPhilosophy />
             </motion.div>
           </div>
-        </section>
+        </section> */}
 
         <section className="py-32 px-4 relative overflow-hidden">
           <motion.div

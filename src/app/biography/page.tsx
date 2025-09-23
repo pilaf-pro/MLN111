@@ -105,13 +105,84 @@ const lifePhases = [
   }
 ]
 
-const personalityTraits = [
-  { trait: "Hiếu Học", icon: "📖", description: "Ham học hỏi suốt đời", percentage: 95 },
-  { trait: "Khiêm Tốn", icon: "🙏", description: "Luôn nhận mình chưa biết", percentage: 90 },
-  { trait: "Nhân Ái", icon: "❤️", description: "Yêu thương mọi người", percentage: 98 },
-  { trait: "Cần Cù", icon: "💪", description: "Chăm chỉ không biết mệt", percentage: 92 },
-  { trait: "Chính Trực", icon: "⚖️", description: "Ngay thẳng, công bằng", percentage: 96 },
-  { trait: "Trí Tuệ", icon: "🧠", description: "Thông thái sâu sắc", percentage: 94 }
+const majorWorks = [
+  {
+    title: "Kinh Thi (詩經)",
+    subtitle: "Tập thơ cổ",
+    description: "Sưu tầm và biên tập 300 bài thơ dân gian",
+    content: "Khổng Tử đã chọn lọc từ hàng nghìn bài thơ cổ để tạo thành bộ sưu tập 300 bài thơ nhằm giáo dục tình cảm trong sáng và cách diễn đạt rõ ràng.",
+    icon: "📜",
+    color: "from-pink-400 to-rose-500",
+    significance: "Nền tảng văn học và giáo dục cảm xúc",
+    quote: "Không học Kinh Thi thì không biết nói năng ra sao"
+  },
+  {
+    title: "Kinh Thư (書經)",
+    subtitle: "Sử sách cổ",
+    description: "Ghi chép các truyền thuyết và biến cố lịch sử",
+    content: "Lưu giữ các câu chuyện về các vị vua cổ, từ những minh quân như Nghiêu, Thuấn đến những bạo chủ như Kiệt, Trụ.",
+    icon: "📚",
+    color: "from-blue-400 to-indigo-500",
+    significance: "Bài học lịch sử cho các thế hệ lãnh đạo",
+    quote: "Học sử để biết hưng thịnh và suy vong"
+  },
+  {
+    title: "Kinh Lễ (禮記)",
+    subtitle: "Quy tắc xã hội",
+    description: "Hệ thống các nghi lễ và quy tắc ứng xử",
+    content: "Khổng Tử biên soạn các quy tắc lễ nghi để duy trì trật tự xã hội và hòa hợp trong cộng đồng.",
+    icon: "🏛️",
+    color: "from-purple-400 to-violet-500",
+    significance: "Nền tảng trật tự xã hội và đạo đức",
+    quote: "Không học Kinh Lễ thì không biết đi đứng ở đời"
+  },
+  {
+    title: "Kinh Dịch (易經)",
+    subtitle: "Triết học vũ trụ",
+    description: "Tư tưởng triết học về âm dương và bát quái",
+    content: "Khổng Tử đã giảng giải và bình luận về Chu Dịch, tạo nên các bài Thoán truyện và Hào truyện.",
+    icon: "☯️",
+    color: "from-green-400 to-emerald-500",
+    significance: "Hiểu biết về quy luật vũ trụ và đời sống",
+    quote: "Cả đời nghiên cứu Kinh Dịch để hiểu đạo trời đất"
+  },
+  {
+    title: "Kinh Xuân Thu (春秋)",
+    subtitle: "Biên niên sử",
+    description: "Lịch sử nước Lỗ với góc nhìn đạo đức",
+    content: "Không chỉ ghi chép sự kiện mà còn đưa ra các lời bình luận có tính giáo dục đạo đức cho các nhà lãnh đạo.",
+    icon: "📖",
+    color: "from-amber-400 to-orange-500",
+    significance: "Kết hợp sử học với giáo dục đạo đức",
+    quote: "Xuân Thu là để dạy cho hậu thế biết phải trái"
+  }
+]
+
+const educationalPrinciples = [
+  {
+    principle: "Có giáo không loại",
+    description: "Giáo dục cho mọi người, không phân biệt xuất thân",
+    percentage: 100,
+    icon: "🎓"
+  },
+  {
+    principle: "Nhân tài giáo dục",
+    description: "Dạy học theo năng lực và đặc điểm từng người",
+    percentage: 95,
+    icon: "👥"
+  },
+  {
+    principle: "Học mà thời tập chi",
+    description: "Học xong phải thường xuyên ôn tập",
+    percentage: 90,
+    icon: "🔄"
+  },
+  {
+    principle: "Tứ tuyệt",
+    description: "Không độc đoán, không chắc chắn tuyệt đối, không cố chấp, không tự cao",
+    percentage: 88,
+    icon: "🧘"
+  }
 ]
 
 function InteractiveLifePhase({ phase, index }: { phase: any, index: number }) {
@@ -227,42 +298,138 @@ function InteractiveLifePhase({ phase, index }: { phase: any, index: number }) {
   )
 }
 
-function PersonalityRadar() {
-  const [selectedTrait, setSelectedTrait] = useState(0)
+function InteractiveMajorWork({ work, index }: { work: any, index: number }) {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], [50, -50])
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), index * 200)
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [index])
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ y, opacity }}
+      className={`transition-all duration-1000 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
+    >
+      <motion.div
+        className="relative mb-8"
+        whileHover={{ scale: 1.02, rotateY: 5 }}
+        transition={{ type: "spring", stiffness: 300 }}
+      >
+        <Card className={`relative overflow-hidden border-2 bg-gradient-to-r ${work.color} p-1 rounded-3xl shadow-xl`}>
+          <div className="bg-card rounded-3xl p-6 h-full">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center space-x-4">
+                <motion.div
+                  className="text-4xl"
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, delay: index * 0.5 }}
+                >
+                  {work.icon}
+                </motion.div>
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground">{work.title}</h3>
+                  <p className="text-lg text-muted-foreground">{work.subtitle}</p>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-foreground mb-4 text-lg">{work.description}</p>
+
+            <motion.div
+              className={`overflow-hidden transition-all duration-500 ${isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
+            >
+              <div className="border-t pt-4 space-y-3">
+                <p className="text-muted-foreground leading-relaxed">
+                  <strong>Nội dung:</strong> {work.content}
+                </p>
+                <p className="text-primary font-medium">
+                  <strong>Ý nghĩa:</strong> {work.significance}
+                </p>
+                <blockquote className="text-primary italic border-l-4 border-primary pl-4">
+                  "{work.quote}"
+                </blockquote>
+              </div>
+            </motion.div>
+
+            <motion.button
+              className="mt-4 text-primary hover:text-secondary font-medium transition-colors flex items-center space-x-2"
+              onClick={() => setIsExpanded(!isExpanded)}
+              whileHover={{ x: 5 }}
+            >
+              <span>{isExpanded ? "Thu gọn" : "Xem chi tiết"}</span>
+              <motion.span
+                animate={{ rotate: isExpanded ? 90 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                →
+              </motion.span>
+            </motion.button>
+          </div>
+        </Card>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+function EducationalPhilosophy() {
+  const [selectedPrinciple, setSelectedPrinciple] = useState(0)
 
   return (
     <div className="bg-card rounded-3xl p-8 border shadow-xl">
       <h3 className="text-3xl font-bold text-center mb-8 text-foreground">
-        Nhân Cách Khổng Tử
+        Nguyên Tắc Giáo Dục
       </h3>
 
       <div className="grid md:grid-cols-2 gap-8">
         <div className="space-y-4">
-          {personalityTraits.map((trait, index) => (
+          {educationalPrinciples.map((item, index) => (
             <motion.div
               key={index}
-              className={`p-4 rounded-xl cursor-pointer transition-all duration-300 ${selectedTrait === index ? "bg-primary/10 border-2 border-primary" : "bg-background border border-border hover:bg-muted/20"
-                }`}
-              onClick={() => setSelectedTrait(index)}
+              className={`p-4 rounded-xl cursor-pointer transition-all duration-300 ${selectedPrinciple === index ? "bg-primary/10 border-2 border-primary" : "bg-background border border-border hover:bg-muted/20"}`}
+              onClick={() => setSelectedPrinciple(index)}
               whileHover={{ scale: 1.02, x: 5 }}
               whileTap={{ scale: 0.98 }}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">{trait.icon}</span>
+                  <span className="text-2xl">{item.icon}</span>
                   <div>
-                    <h4 className="font-bold text-foreground">{trait.trait}</h4>
-                    <p className="text-sm text-muted-foreground">{trait.description}</p>
+                    <h4 className="font-bold text-foreground">{item.principle}</h4>
+                    <p className="text-sm text-muted-foreground">{item.description}</p>
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-primary">{trait.percentage}%</div>
+                <div className="text-xl font-bold text-primary">{item.percentage}%</div>
               </div>
 
               <div className="mt-3 bg-muted rounded-full h-2 overflow-hidden">
                 <motion.div
                   className="h-full bg-gradient-to-r from-primary to-secondary rounded-full"
                   initial={{ width: 0 }}
-                  animate={{ width: selectedTrait === index ? `${trait.percentage}%` : "0%" }}
+                  animate={{ width: selectedPrinciple === index ? `${item.percentage}%` : "0%" }}
                   transition={{ duration: 1, delay: 0.2 }}
                 />
               </div>
@@ -271,27 +438,27 @@ function PersonalityRadar() {
         </div>
 
         <motion.div
-          key={selectedTrait}
-          className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-6 border"
+          key={selectedPrinciple}
+          className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-6 border flex flex-col justify-center"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
         >
           <div className="text-center">
-            <div className="text-6xl mb-4">{personalityTraits[selectedTrait].icon}</div>
-            <h4 className="text-3xl font-bold text-primary mb-4">
-              {personalityTraits[selectedTrait].trait}
+            <div className="text-6xl mb-4">{educationalPrinciples[selectedPrinciple].icon}</div>
+            <h4 className="text-2xl font-bold text-primary mb-4">
+              {educationalPrinciples[selectedPrinciple].principle}
             </h4>
-            <p className="text-xl text-muted-foreground mb-6">
-              {personalityTraits[selectedTrait].description}
+            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+              {educationalPrinciples[selectedPrinciple].description}
             </p>
 
-            <div className="relative w-32 h-32 mx-auto">
-              <motion.svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+            <div className="relative w-24 h-24 mx-auto">
+              <motion.svg className="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
                 <circle
                   cx="50"
                   cy="50"
-                  r="40"
+                  r="35"
                   stroke="currentColor"
                   strokeWidth="8"
                   fill="transparent"
@@ -300,24 +467,24 @@ function PersonalityRadar() {
                 <motion.circle
                   cx="50"
                   cy="50"
-                  r="40"
+                  r="35"
                   stroke="currentColor"
                   strokeWidth="8"
                   fill="transparent"
                   className="text-primary"
                   strokeLinecap="round"
                   initial={{ pathLength: 0 }}
-                  animate={{ pathLength: personalityTraits[selectedTrait].percentage / 100 }}
+                  animate={{ pathLength: educationalPrinciples[selectedPrinciple].percentage / 100 }}
                   transition={{ duration: 1, delay: 0.5 }}
                   style={{
-                    strokeDasharray: "251.2px",
-                    strokeDashoffset: "251.2px"
+                    strokeDasharray: "219.8px",
+                    strokeDashoffset: "219.8px"
                   }}
                 />
               </motion.svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-2xl font-bold text-primary">
-                  {personalityTraits[selectedTrait].percentage}%
+                <span className="text-lg font-bold text-primary">
+                  {educationalPrinciples[selectedPrinciple].percentage}%
                 </span>
               </div>
             </div>
@@ -425,6 +592,26 @@ export default function BiographyPage() {
           </div>
         </section>
 
+        <section className="py-20 px-4">
+          <div className="max-w-7xl mx-auto">
+            <motion.h2
+              className="text-5xl md:text-6xl font-bold text-center mb-20 text-foreground"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              Ngũ Kinh - Tác Phẩm Vĩ Đại
+            </motion.h2>
+
+            <div className="grid lg:grid-cols-2 gap-8">
+              {majorWorks.map((work, index) => (
+                <InteractiveMajorWork key={index} work={work} index={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="py-32 px-4 bg-gradient-to-r from-muted/20 to-background">
           <div className="max-w-6xl mx-auto">
             <motion.h2
@@ -434,7 +621,7 @@ export default function BiographyPage() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              Phân Tích Nhân Cách
+              Triết Lý Giáo Dục
             </motion.h2>
 
             <motion.div
@@ -443,7 +630,7 @@ export default function BiographyPage() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <PersonalityRadar />
+              <EducationalPhilosophy />
             </motion.div>
           </div>
         </section>

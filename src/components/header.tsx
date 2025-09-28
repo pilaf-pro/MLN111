@@ -32,8 +32,8 @@ export function Header() {
   return (
     <motion.header
       className={`sticky top-0 z-50 transition-all duration-500 ${scrolled
-          ? "bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-lg shadow-primary/5"
-          : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border"
+        ? "bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-lg shadow-primary/5"
+        : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border"
         }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -71,65 +71,12 @@ export function Header() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Link href="/" className="flex items-center space-x-3 group">
-              <motion.div
-                className="relative w-10 h-10 bg-gradient-to-br from-primary via-blue-600 to-purple-600 rounded-full flex items-center justify-center shadow-lg"
-                whileHover={{
-                  scale: 1.1,
-                  rotate: 5,
-                  boxShadow: "0 0 25px rgba(59, 130, 246, 0.5)"
-                }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                <span className="text-white font-bold text-lg relative z-10">孔</span>
-
-                {/* Floating particles around logo */}
-                <motion.div
-                  className="absolute inset-0 pointer-events-none"
-                  whileHover="hover"
-                >
-                  {[...Array(6)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute w-1 h-1 bg-yellow-400 rounded-full"
-                      style={{
-                        left: "50%",
-                        top: "50%",
-                      }}
-                      variants={{
-                        hover: {
-                          x: Math.cos((i * 60 * Math.PI) / 180) * 25,
-                          y: Math.sin((i * 60 * Math.PI) / 180) * 25,
-                          scale: [0, 1, 0],
-                          opacity: [0, 1, 0],
-                        }
-                      }}
-                      transition={{
-                        duration: 1,
-                        repeat: Infinity,
-                        delay: i * 0.1,
-                      }}
-                    />
-                  ))}
-                </motion.div>
-              </motion.div>
-
-              <div className="flex flex-col">
-                <motion.h1
-                  className="text-xl font-bold text-foreground group-hover:text-primary transition-colors"
-                  whileHover={{ x: 2 }}
-                >
-                  Khổng Tử
-                </motion.h1>
-                <motion.span
-                  className="text-xs text-muted-foreground"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  孔夫子
-                </motion.span>
-              </div>
+            <Link href="/" className="group">
+              <img
+                src="/images/logo.png"
+                alt="Logo"
+                className="w-30 h-11.57 object-cover"
+              />
             </Link>
           </motion.div>
 
@@ -145,8 +92,8 @@ export function Header() {
                 <Link href={item.href}>
                   <motion.div
                     className={`relative px-4 py-2 rounded-lg transition-all duration-300 ${pathname === item.href
-                        ? "text-primary font-medium bg-primary/10 shadow-sm"
-                        : "text-foreground hover:text-primary hover:bg-primary/5"
+                      ? "text-primary font-medium bg-primary/10 shadow-sm"
+                      : "text-foreground hover:text-primary hover:bg-primary/5"
                       }`}
                     whileHover={{
                       scale: 1.05,
@@ -243,8 +190,8 @@ export function Header() {
                     >
                       <motion.div
                         className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 ${pathname === item.href
-                            ? "text-primary font-medium bg-primary/10 shadow-sm"
-                            : "text-foreground hover:text-primary hover:bg-primary/5"
+                          ? "text-primary font-medium bg-primary/10 shadow-sm"
+                          : "text-foreground hover:text-primary hover:bg-primary/5"
                           }`}
                         whileHover={{
                           x: 5,

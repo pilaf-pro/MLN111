@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { User, GraduationCap, Crown, Scroll, Heart } from "lucide-react"
 
 const timelineEvents = [
   {
@@ -12,8 +13,10 @@ const timelineEvents = [
     title: "Ra đời tại ấp Trâu, thôn Xương Bình",
     description: "Khổng Khâu sinh ra tại nước Lỗ (nay là huyện Khúc Phụ, tỉnh Sơn Đông)",
     details:
-      "Cha là Thúc Lương Hột (70 tuổi), mẹ là Nhan thị (18 tuổi). Cuộc hôn nhân này được gọi là 'dã hợp' vì chênh lệch tuổi tác lớn. Tên Khâu được đặt theo Ni Khâu - nơi cha mẹ cầu con.",
+      "Cha là Thúc Lương Hột (70 tuổi), mẹ là Nhan Trưng Tại (18 tuổi). Cuộc hôn nhân này được gọi là 'dã hợp' vì chênh lệch tuổi tác lớn. Tên Khâu được đặt theo Ni Khâu - nơi cha mẹ cầu con.",
     category: "Thời thơ ấu",
+    icon: User,
+    location: "Nước Lỗ",
   },
   {
     year: "549 TCN",
@@ -150,11 +153,10 @@ export function TimelineSection() {
                   <div className="absolute left-6 w-4 h-4 bg-primary rounded-full border-4 border-background shadow-lg hidden md:block"></div>
 
                   <Card
-                    className={`ml-0 md:ml-16 cursor-pointer transition-all duration-300 ${
-                      selectedEvent === index
+                    className={`ml-0 md:ml-16 cursor-pointer transition-all duration-300 ${selectedEvent === index
                         ? "ring-2 ring-primary shadow-xl scale-[1.02]"
                         : "hover:shadow-lg hover:scale-[1.01]"
-                    } border-border`}
+                      } border-border`}
                   >
                     <CardHeader
                       onClick={() => setSelectedEvent(selectedEvent === index ? null : index)}

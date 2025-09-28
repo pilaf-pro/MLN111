@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function BiographySection() {
   return (
@@ -24,7 +24,7 @@ export function BiographySection() {
                 </p>
                 <p>
                   <strong className="text-foreground">Cha mẹ:</strong> Cha là Thúc Lương Hột (Khổng Hột), mẹ là Nhan
-                  thị. Cuộc hôn nhân này được gọi là "dã hợp" vì chênh lệch tuổi tác lớn (cha 70 tuổi, mẹ 18 tuổi).
+                  Trưng Tại. Cuộc hôn nhân này được gọi là "dã hợp" vì chênh lệch tuổi tác lớn (cha 70 tuổi, mẹ 18 tuổi).
                 </p>
                 <p>
                   <strong className="text-foreground">Thời thơ ấu:</strong> Mồ côi cha lúc 2 tuổi, sống trong cảnh nghèo

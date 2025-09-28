@@ -98,12 +98,12 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
                                     <div className="text-2xl font-serif text-amber-900 mb-4 tracking-wide">
                                         學而時習之
                                     </div>
-                                    {/* <div className="text-lg text-amber-700 italic">
-                                        Biết thì nói là biết, không biết thì nói là không biết, đó mới là biết
-                                    </div> */}
+                                    <div className="text-lg text-amber-700 italic mb-6">
+                                        Đạo không xa người. Người làm đạo mà xa người, không thể coi là đạo được
+                                    </div>
 
                                     {/* Decorative elements */}
-                                    <div className="flex justify-center items-center mt-8 space-x-4">
+                                    <div className="flex justify-center items-center mt-4 space-x-4">
                                         <div className="w-16 h-px bg-amber-600"></div>
                                         <div className="text-amber-700">⚊</div>
                                         <div className="w-16 h-px bg-amber-600"></div>

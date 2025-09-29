@@ -10,9 +10,11 @@ import { motion, AnimatePresence } from "framer-motion"
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
+    setMounted(true)
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
     }
@@ -41,8 +43,8 @@ export function Header() {
       transition={{ duration: 0.6, type: "spring" }}
     >
       {/* Floating Chinese Characters Background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {["智", "仁", "礼", "义"].map((char, index) => (
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" suppressHydrationWarning={true}>
+        {mounted && ["智", "仁", "礼", "义"].map((char, index) => (
           <motion.div
             key={index}
             className="absolute text-2xl font-bold opacity-5 text-primary"
@@ -59,6 +61,7 @@ export function Header() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
+            suppressHydrationWarning={true}
           >
             {char}
           </motion.div>
@@ -69,26 +72,29 @@ export function Header() {
         <div className="flex items-center justify-between" suppressHydrationWarning={true}>
           {/* Enhanced Logo */}
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={mounted ? { scale: 1.05 } : {}}
+            whileTap={mounted ? { scale: 0.95 } : {}}
+            suppressHydrationWarning={true}
           >
             <Link href="/" className="group">
               <img
                 src="/images/logo.png"
                 alt="Logo"
                 className="w-30 h-11.57 object-cover"
+                suppressHydrationWarning={true}
               />
             </Link>
           </motion.div>
 
           {/* Enhanced Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-2">
+          <nav className="hidden md:flex items-center space-x-2" suppressHydrationWarning={true}>
             {navItems.map((item, index) => (
               <motion.div
                 key={item.href}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                initial={mounted ? { opacity: 0, y: -20 } : false}
+                animate={mounted ? { opacity: 1, y: 0 } : {}}
+                transition={mounted ? { delay: index * 0.1 } : {}}
+                suppressHydrationWarning={true}
               >
                 <Link href={item.href}>
                   <motion.div
@@ -108,24 +114,28 @@ export function Header() {
                     </span>
 
                     {/* Active indicator */}
-                    {pathname === item.href && (
+                    {pathname === item.href && mounted && (
                       <motion.div
                         className="absolute inset-0 bg-gradient-to-r from-primary/20 to-blue-500/20 rounded-lg"
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                        suppressHydrationWarning={true}
                       />
                     )}
 
                     {/* Hover shine effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-lg opacity-0"
-                      whileHover={{
-                        opacity: 1,
-                        x: ["-100%", "100%"]
-                      }}
-                      transition={{ duration: 0.6 }}
-                    />
+                    {mounted && (
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-lg opacity-0"
+                        whileHover={{
+                          opacity: 1,
+                          x: ["-100%", "100%"]
+                        }}
+                        transition={{ duration: 0.6 }}
+                        suppressHydrationWarning={true}
+                      />
+                    )}
                   </motion.div>
                 </Link>
               </motion.div>
@@ -134,25 +144,29 @@ export function Header() {
 
           {/* Enhanced Mobile Menu Button */}
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={mounted ? { scale: 1.05 } : {}}
+            whileTap={mounted ? { scale: 0.95 } : {}}
+            suppressHydrationWarning={true}
           >
             <Button
               variant="ghost"
               size="icon"
               className="md:hidden relative overflow-hidden group"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              suppressHydrationWarning={true}
             >
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-primary/10 to-blue-500/10 rounded-md scale-0 group-hover:scale-100 transition-transform duration-300"
+                suppressHydrationWarning={true}
               />
               <AnimatePresence mode="wait">
                 <motion.div
                   key={isMenuOpen ? "close" : "menu"}
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
+                  initial={mounted ? { rotate: -90, opacity: 0 } : false}
+                  animate={mounted ? { rotate: 0, opacity: 1 } : {}}
+                  exit={mounted ? { rotate: 90, opacity: 0 } : {}}
+                  transition={mounted ? { duration: 0.2 } : {}}
+                  suppressHydrationWarning={true}
                 >
                   {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                 </motion.div>
@@ -163,7 +177,7 @@ export function Header() {
 
         {/* Enhanced Mobile Navigation */}
         <AnimatePresence>
-          {isMenuOpen && (
+          {isMenuOpen && mounted && (
             <motion.nav
               className="md:hidden mt-4 pb-4 border-t border-border/50 pt-4"
               initial={{ opacity: 0, height: 0 }}
@@ -184,6 +198,7 @@ export function Header() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
+                    suppressHydrationWarning={true}
                   >
                     <Link
                       href={item.href}
@@ -194,21 +209,23 @@ export function Header() {
                           ? "text-primary font-medium bg-primary/10 shadow-sm"
                           : "text-foreground hover:text-primary hover:bg-primary/5"
                           }`}
-                        whileHover={{
+                        whileHover={mounted ? {
                           x: 5,
                           backgroundColor: "rgba(59, 130, 246, 0.08)"
-                        }}
-                        whileTap={{ scale: 0.98 }}
+                        } : {}}
+                        whileTap={mounted ? { scale: 0.98 } : {}}
+                        suppressHydrationWarning={true}
                       >
                         <span className="text-lg">{item.icon}</span>
                         <span>{item.label}</span>
 
-                        {pathname === item.href && (
+                        {pathname === item.href && mounted && (
                           <motion.div
                             className="ml-auto w-2 h-2 bg-primary rounded-full"
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ type: "spring", stiffness: 400 }}
+                            suppressHydrationWarning={true}
                           />
                         )}
                       </motion.div>

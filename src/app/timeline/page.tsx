@@ -262,8 +262,8 @@ function Enhanced3DTimelineEvent({ event, index, isSelected, onSelect }: any) {
         >
           <Card
             className={`cursor-pointer transition-all duration-500 border-2 relative overflow-hidden ${isSelected
-                ? `ring-4 shadow-2xl scale-[1.02] border-opacity-100`
-                : "hover:shadow-xl hover:bg-muted/20 border-opacity-50"
+              ? `ring-4 shadow-2xl scale-[1.02] border-opacity-100`
+              : "hover:shadow-xl hover:bg-muted/20 border-opacity-50"
               }`}
             style={{
               borderColor: categoryStyle.color,
@@ -502,7 +502,7 @@ export default function TimelinePage() {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <FallingLeaves />
-      <EnhancedTimelineProgress />
+      {/* <EnhancedTimelineProgress /> */}
       <Header />
 
       <main className="pt-20">

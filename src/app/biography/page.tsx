@@ -507,10 +507,10 @@ export default function BiographyPage() {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-background relative overflow-hidden">
-      <motion.div
+      {/* <motion.div
         className="fixed top-0 left-0 h-1 bg-gradient-to-r from-primary to-secondary z-50"
         style={{ width: progressWidth }}
-      />
+      /> */}
 
       <FallingLeaves />
       <Header />

@@ -160,48 +160,44 @@ export function ConfuciusChatbot() {
         })
     }
 
-    // Format message content với markdown-like support
+    // Format message content - BỎ FORMATTING PHỨC TẠP, CHỈ GIỮ CẤU TRÚC
     const formatMessageContent = (content: string) => {
         if (!content) return ''
 
-        // Split content by lines và format từng dòng
+        // Split content by lines và chỉ xử lý cấu trúc danh sách
         const lines = content.split('\n')
+
         return lines.map((line, index) => {
-            // Format in đậm **text**
-            let formatted = line.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>')
+            const trimmedLine = line.trim()
 
-            // Format in nghiêng *text*
-            formatted = formatted.replace(/\*(.*?)\*/g, '<em class="italic text-gray-700">$1</em>')
-
-            // Format quotes "text"
-            formatted = formatted.replace(/"([^"]+)"/g, '<span class="text-blue-600 font-medium bg-blue-50 px-1.5 py-0.5 rounded">"$1"</span>')
-
-            // Format danh sách - item
-            if (line.trim().startsWith('-') || line.trim().startsWith('•')) {
+            // Format danh sách - item (không format text bên trong)
+            if (trimmedLine.startsWith('-') || trimmedLine.startsWith('•')) {
+                const bulletContent = line.replace(/^[-•]\s*/, '')
                 return (
                     <div key={index} className="flex items-start space-x-2 my-1">
                         <span className="text-blue-500 text-sm mt-0.5">•</span>
-                        <span dangerouslySetInnerHTML={{ __html: formatted.replace(/^[-•]\s*/, '') }} />
+                        <span className="whitespace-pre-wrap">{bulletContent}</span>
                     </div>
                 )
             }
 
-            // Format số 1. 2. 3.
-            if (/^\d+\.\s/.test(line.trim())) {
-                const match = line.match(/^(\d+)\.\s(.*)/)
+            // Format số 1. 2. 3. (không format text bên trong)
+            if (/^\d+\.\s/.test(trimmedLine)) {
+                const match = trimmedLine.match(/^(\d+)\.\s(.*)/)
                 if (match) {
                     return (
                         <div key={index} className="flex items-start space-x-2 my-1">
                             <span className="text-blue-600 font-bold text-sm bg-blue-100 w-5 h-5 rounded-full flex items-center justify-center text-xs">{match[1]}</span>
-                            <span dangerouslySetInnerHTML={{ __html: match[2] }} />
+                            <span className="whitespace-pre-wrap">{match[2]}</span>
                         </div>
                     )
                 }
             }
 
+            // Format normal text - chỉ plain text
             return (
                 <div key={index} className={index > 0 ? "mt-2" : ""}>
-                    <span dangerouslySetInnerHTML={{ __html: formatted }} />
+                    <span className="whitespace-pre-wrap">{line}</span>
                 </div>
             )
         })

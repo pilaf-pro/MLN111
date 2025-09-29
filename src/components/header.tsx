@@ -27,6 +27,7 @@ export function Header() {
     { href: "/philosophy", label: "Triết Học", icon: "🧠" },
     { href: "/teachings", label: "Giáo Lý", icon: "📚" },
     { href: "/timeline", label: "Lịch Sử", icon: "⏰" },
+    { href: "/quiz", label: "Quiz", icon: "🧩" },
   ]
 
   return (

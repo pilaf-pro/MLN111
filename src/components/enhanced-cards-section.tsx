@@ -36,6 +36,14 @@ const cardData = [
         href: "/timeline",
         gradient: "from-orange-500 to-red-500",
         bgPattern: "radial-gradient(circle at 80% 80%, rgba(249, 115, 22, 0.1) 0%, transparent 50%)"
+    },
+    {
+        title: "Quiz",
+        description: "Kiểm tra kiến thức của bạn về Khổng Tử",
+        icon: "🧩",
+        href: "/quiz",
+        gradient: "from-indigo-500 to-purple-500",
+        bgPattern: "radial-gradient(circle at 60% 40%, rgba(99, 102, 241, 0.1) 0%, transparent 50%)"
     }
 ]
 

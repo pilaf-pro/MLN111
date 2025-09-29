@@ -79,6 +79,23 @@ const philosophies = [
       "Đặt lợi ích chung lên trên",
     ],
   },
+  {
+    icon: Compass,
+    title: "Tín (信)",
+    description: "Lòng tin và sự thành thật",
+    content: "Tín là nền tảng của mọi mối quan hệ, thể hiện qua việc giữ lời hứa, thành thật và đáng tin cậy.",
+    color: "amber",
+    quote: "Người không có tín thì không biết làm gì được",
+    chineseQuote: "人而無信，不知其可也",
+    symbolColor: "#f59e0b",
+    position: { x: 100, y: 100 },
+    details: [
+      "Giữ lời hứa đã đưa ra",
+      "Thành thật trong lời nói và hành động",
+      "Xây dựng lòng tin trong cộng đồng",
+      "Cơ sở cho mọi giao ước xã hội",
+    ],
+  },
 ]
 
 // Floating wisdom particles data
@@ -87,6 +104,7 @@ const wisdomParticles = [
   { char: "仁", color: "#ef4444" },
   { char: "礼", color: "#3b82f6" },
   { char: "义", color: "#8b5cf6" },
+  { char: "信", color: "#f59e0b" },
   { char: "和", color: "#f59e0b" },
   { char: "德", color: "#06b6d4" },
   { char: "学", color: "#84cc16" },
@@ -96,8 +114,10 @@ const wisdomParticles = [
 // Floating Wisdom Particles Component
 function FloatingWisdomParticles() {
   const [dimensions, setDimensions] = useState({ width: 1200, height: 800 })
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
     if (typeof window !== 'undefined') {
       setDimensions({ width: window.innerWidth, height: window.innerHeight })
 
@@ -110,33 +130,46 @@ function FloatingWisdomParticles() {
     }
   }, [])
 
+  // Don't render on server to avoid hydration mismatch
+  if (!isMounted) {
+    return null
+  }
+
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {wisdomParticles.map((particle, index) => (
-        <motion.div
-          key={index}
-          className="absolute text-4xl font-bold opacity-20"
-          style={{ color: particle.color }}
-          initial={{
-            x: Math.random() * dimensions.width,
-            y: Math.random() * dimensions.height,
-            rotate: 0,
-          }}
-          animate={{
-            x: Math.random() * dimensions.width,
-            y: Math.random() * dimensions.height,
-            rotate: 360,
-          }}
-          transition={{
-            duration: 20 + Math.random() * 10,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "linear",
-          }}
-        >
-          {particle.char}
-        </motion.div>
-      ))}
+      {wisdomParticles.map((particle, index) => {
+        // Use index-based positioning to ensure consistency
+        const initialX = (index * 200 + 100) % dimensions.width
+        const initialY = (index * 150 + 100) % dimensions.height
+        const targetX = ((index + 1) * 250 + 150) % dimensions.width
+        const targetY = ((index + 1) * 180 + 120) % dimensions.height
+
+        return (
+          <motion.div
+            key={index}
+            className="absolute text-4xl font-bold opacity-20"
+            style={{ color: particle.color }}
+            initial={{
+              x: initialX,
+              y: initialY,
+              rotate: 0,
+            }}
+            animate={{
+              x: targetX,
+              y: targetY,
+              rotate: 360,
+            }}
+            transition={{
+              duration: 20 + index * 2,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "linear",
+            }}
+          >
+            {particle.char}
+          </motion.div>
+        )
+      })}
     </div>
   )
 }
@@ -190,6 +223,7 @@ function Enhanced3DPhilosophyCard({ philosophy, index }: { philosophy: any; inde
     blue: "border-blue-200 hover:border-blue-400 bg-gradient-to-br from-blue-50 to-blue-100",
     green: "border-green-200 hover:border-green-400 bg-gradient-to-br from-green-50 to-green-100",
     purple: "border-purple-200 hover:border-purple-400 bg-gradient-to-br from-purple-50 to-purple-100",
+    amber: "border-amber-200 hover:border-amber-400 bg-gradient-to-br from-amber-50 to-amber-100",
   }
 
   return (
@@ -332,7 +366,7 @@ function PhilosophyWheel() {
         style={{ transform: `rotate(${rotation}deg)` }}
       >
         {philosophies.map((philosophy, index) => {
-          const angle = index * 90 - 45
+          const angle = index * 72 - 45
           const x = Math.cos((angle * Math.PI) / 180) * 120
           const y = Math.sin((angle * Math.PI) / 180) * 120
           const IconComponent = philosophy.icon
@@ -408,7 +442,7 @@ function Interactive3DPhilosophyWheel() {
 
       <div className="absolute inset-0">
         {philosophies.map((philosophy, index) => {
-          const angle = index * 90
+          const angle = index * 72
           const radius = 130
           const x = Math.cos((angle * Math.PI) / 180) * radius
           const y = Math.sin((angle * Math.PI) / 180) * radius
@@ -577,7 +611,7 @@ export default function PhilosophyPage() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.8 }}
               >
-                Khám phá bốn trụ cột của tư tưởng Nho giáo
+                Khám phá năm trụ cột của tư tưởng Nho giáo
               </motion.p>
             </motion.div>
 
@@ -601,7 +635,7 @@ export default function PhilosophyPage() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              Tứ Đức: Bốn Đức Tính Cốt Lõi
+              Ngũ Đức: Năm Đức Tính Cốt Lõi
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {philosophies.map((philosophy, index) => (

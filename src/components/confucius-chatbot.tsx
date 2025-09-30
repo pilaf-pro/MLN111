@@ -102,6 +102,11 @@ export function ConfuciusChatbot() {
                                     accumulatedContent += data.content
                                     isTypingEffect = true
 
+                                    // Ẩn loading ngay khi nhận được chunk đầu tiên
+                                    if (accumulatedContent.length > 0) {
+                                        setIsLoading(false)
+                                    }
+
                                     // Cập nhật message với hiệu ứng typing mượt mà
                                     setMessages(prev =>
                                         prev.map(msg =>
@@ -141,9 +146,8 @@ export function ConfuciusChatbot() {
             )
             // Scroll xuống sau khi hiển thị lỗi
             setTimeout(() => scrollToBottom(), 100)
+            setIsLoading(false)
         }
-
-        setIsLoading(false)
     }
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
